@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="PT-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuvem - Dashboard do clima</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<!-- Nos cards, utilizei <class> para agrudar os cards -->
+
+<body>
+    <div class="Title">
+        <h1>Nuvem</h1>
+        <h6>Dashboard do clima</h6>
+    </div>
+    <div class="mainDiv">
+        <div class="cards">
+            <div class="cardsTipos">
+                <h1>Atuais</h1>
+                <div>
+                    <p>Temperatura atual</p>
+                    <p class="mostrador" id="temperatura_atual"></p>
+                    <p>Temperatura aparente</p>
+                    <p class="mostrador" id="temp_aparente_atual"></p>
+                </div>
+                <div>
+                    <p>Pressão atmosférica</p>
+                    <p class="mostrador" id="pressao_ar"></p>
+                </div>
+                <div>
+                    <p>Chuva</p>
+                    <p class="mostrador" id="chuvaAtual"></p>
+                </div>
+                <div>
+                    <p>Vento</p>
+                    <p class="mostrador" id="vento_dir_atual"></p>
+                    <p class="mostrador" id="vento_vel_atual"></p>
+                </div>
+                <div>
+                    <p>Umidade</p>
+                    <p class="mostrador" id="relative_humidity_2m"></p>
+                </div>
+            </div>
+            <div class="cardsTipos">
+                <h1>Hourly</h1>
+                <div>
+                    <p>Temperaturas</p>
+                    <p class="mostrador" id=""></p>
+                </div>
+                <div>
+                    <p>Chuvas</p>
+                </div>
+                <div>
+                    <p>Ventos</p>
+                </div>
+                <div>
+                    <p>Temperatuas no solo</p>
+                </div>
+            </div>
+            <div class="cardsTipos">
+                <h1>Daily</h1>
+                <div>
+                    <p>Temperaturas</p>
+                    <p class="mostrador" id="daily_temp"></p>
+                </div>
+                <div>
+                    <p>Temperatuas aparentes</p>
+                </div>
+                <div>
+                    <p>Duração da luz solar</p>
+                    <p class="mostrador" id="daylight_duration"></p>
+                </div>
+                <div>
+                    <p>Amanhecer e anoitecer</p>
+                    <p class="mostrador" id="sunrise"></p>
+                    <p class="mostrador" id="sunset"></p>
+                </div>
+                <div>
+                    <p>Ventos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>2026</footer>
+</body>
+<script>
+
+    const apiURL = "https://api.open-meteo.com/v1/forecast?latitude=-29.7175&longitude=-52.4258&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,daylight_duration,sunshine_duration,apparent_temperature_max,apparent_temperature_min,rain_sum,wind_direction_10m_dominant,wind_gusts_10m_max,wind_speed_10m_max,temperature_2m_mean&hourly=temperature_2m,rain,precipitation_probability,apparent_temperature,precipitation,wind_speed_10m,wind_speed_180m,wind_direction_10m,wind_direction_180m,temperature_80m,temperature_180m,soil_temperature_0cm,soil_temperature_54cm,soil_moisture_0_to_1cm,soil_moisture_27_to_81cm&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,rain,precipitation,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&timezone=America%2FSao_Paulo&past_days=3&forecast_days=1"
+    let dados;
+
+    function acessarDados(dados) {
+
+        document.getElementById('temperatura_atual').innerText = `${dados.current.temperature_2m} °C`; // Temperatura atual
+        document.getElementById('temp_aparente_atual').innerText = `${dados.current.apparent_temperature} °C`; // Temperatura aparente atual
+        document.getElementById('pressao_ar').innerText = `${dados.current.pressure_msl} hPa` // Pressão atmosférica
+        document.getElementById('chuvaAtual').innerText = `${dados.current.rain} mm`; // Chuva atual
+        document.getElementById('vento_dir_atual').innerText = `${dados.current.wind_direction_10m} °` // Direção do vento atual
+        document.getElementById('vento_vel_atual').innerText = `${dados.current.wind_speed_10m} km/h`; // Velocidade do vento atual
+        document.getElementById('relative_humidity_2m').innerText = `${dados.current.relative_humidity_2m} %`; // Umidade relativa do ar a 2m
+
+
+        // Temperaturas dia a dia
+        for (let i = dados.daily.time.length -2; i < dados.daily.time.length; i++) {
+            document.getElementById("daily_temp").innerHTML += (
+                new Date(dados.daily.time[i]).toLocaleDateString("pt-BR", {weekday: "long", day: "2-digit", month: "2-digit"}) + 
+                " Temperatura máxima: " + `${dados.daily.temperature_2m_max[i]} °C` +
+                " Temperatura mínima: " + `${dados.daily.temperature_2m_min[i]} °C` +
+                "<br>"
+            );
+        }
+
+        // Amanhecer e anoitecer
+        for (let i = 0; i < dados.daily.sunrise.length; i++) {
+            const valorAmanhecer = dados.daily.sunrise[i];
+            const valorAnoitecer = dados.daily.sunset[i];
+            const dataObj1 = new Date(valorAmanhecer);
+            const dataObj2 = new Date(valorAnoitecer);
+            const sunriseTimeFormatted = dataObj1.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+            const sunsetTimeFormatted = dataObj2.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+            console.log(`Hora do amanhecer: ${sunriseTimeFormatted}, Hora do anoitecer: ${sunsetTimeFormatted}`);
+
+            document.getElementById('sunrise').innerHTML += `Amanheceu às ${sunriseTimeFormatted} <br>`;
+            document.getElementById('sunset').innerHTML += `Anoiteceu às ${sunsetTimeFormatted} <br>`;
+
+
+
+        }
+
+        }
+
+    // Busca a API
+    fetch(apiURL)
+        .then(function(objResponse) {
+            return objResponse.json();
+        })  
+        .then(function(dados) {
+            acessarDados(dados);
+        });
+
+        // Mede o tempo de resposta da API
+        async function tempoAPI() {
+        // 1. Inicia o cronômetro com o nome 'tempo-api'
+        console.time('Tempo de resposta da API');        
+        await fetch(apiURL);
+        // 2. Para o cronômetro e mostra o tempo decorrido no console
+        console.timeEnd('Tempo de resposta da API');
+    }
+
+    function percorrerDados() {
+        console.log(dados)
+    }
+
+    tempoAPI();
+    percorrerDados();
+
+</script>
+</html>
