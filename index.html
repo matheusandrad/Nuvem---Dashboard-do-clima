@@ -232,10 +232,10 @@
         // Loop que percorre <temperatura>, <chuva>, <ventos> e <temperatura do solo> das últimas 24h
         for (let i = hourlyTime.length - 1; i >= hourlyTime.length - 24; i--) {
             const date = new Date(hourlyTime[i]).toLocaleTimeString("pt-BR", {hour: "2-digit"})
-            document.getElementById('hourly-temperatures').innerHTML += (`${date}h | ${dados.hourly.temperature_2m[i]} ${dados.hourly_units.temperature_2m} <br>`)
-            document.getElementById('hourly-rain').innerHTML += (`${date}h | ${dados.hourly.rain[i]} ${dados.hourly_units.rain} <br>  `)
-            document.getElementById('hourly-wind').innerHTML += (`${date}h | ${dados.hourly.wind_speed_10m[i]} ${dados.hourly_units.wind_speed_10m} <br>  `)
-            document.getElementById('hourly-soil-temp').innerHTML += (`${date}h | ${dados.hourly.soil_temperature_0cm[i]} ${dados.hourly_units.soil_temperature_0cm} | a 0 cm <br>  `)
+            document.getElementById('hourly-temperatures').innerHTML += (`${date}h | ${dados.hourly.temperature_2m[i].toFixed(1)} ${dados.hourly_units.temperature_2m} <br>`)
+            document.getElementById('hourly-rain').innerHTML += (`${date}h | ${dados.hourly.rain[i].toFixed(1)} ${dados.hourly_units.rain} <br>  `)
+            document.getElementById('hourly-wind').innerHTML += (`${date}h | ${dados.hourly.wind_speed_10m[i].toFixed(1)} ${dados.hourly_units.wind_speed_10m} <br>  `)
+            document.getElementById('hourly-soil-temp').innerHTML += (`${date}h | ${dados.hourly.soil_temperature_0cm[i].toFixed(1)} ${dados.hourly_units.soil_temperature_0cm} | a 0 cm <br>  `)
         }
 
         const dayOrNight = dados.current.is_day > true ? "Dia" : "Noite";
