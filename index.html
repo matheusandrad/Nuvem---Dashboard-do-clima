@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuvem - Dashboard do clima</title>
+    <link rel="icon" href="assets/cloud.svg" type="image/png">
     <style>
         @font-face {
         font-family: Oswald;
@@ -103,6 +104,10 @@
                 <div>
                     <p>Chuva agora</p>
                     <p class="mostrador" id="chuva-atual"></p>
+                </div>
+                <div>
+                    <p>Dia ou noite</p>
+                    <p class="mostrador" id="day-night"></p>
                 </div>
                 <div>
                     <p>Vento agora</p>
@@ -221,17 +226,19 @@
         const bussola = getBussola(dados.current.wind_direction_10m);
 
         // ----------------------------------------------------------------------------------------------------------------- //
-        // ----------------------------------------Bloco últimos 3 dias----------------------------------------------------- //
+        // ------------------------------------------------Bloco últimas 24h------------------------------------------------ //
         // ----------------------------------------------------------------------------------------------------------------- //
 
         // Loop que percorre <temperatura>, <chuva>, <ventos> e <temperatura do solo> das últimas 24h
-        for (let i = hourlyTime.length - 24; i < hourlyTime.length; i++) {
+        for (let i = hourlyTime.length - 1; i >= hourlyTime.length - 24; i--) {
             const date = new Date(hourlyTime[i]).toLocaleTimeString("pt-BR", {hour: "2-digit"})
             document.getElementById('hourly-temperatures').innerHTML += (`${date}h | ${dados.hourly.temperature_2m[i]} ${dados.hourly_units.temperature_2m} <br>`)
             document.getElementById('hourly-rain').innerHTML += (`${date}h | ${dados.hourly.rain[i]} ${dados.hourly_units.rain} <br>  `)
             document.getElementById('hourly-wind').innerHTML += (`${date}h | ${dados.hourly.wind_speed_10m[i]} ${dados.hourly_units.wind_speed_10m} <br>  `)
             document.getElementById('hourly-soil-temp').innerHTML += (`${date}h | ${dados.hourly.soil_temperature_0cm[i]} ${dados.hourly_units.soil_temperature_0cm} | a 0 cm <br>  `)
         }
+
+        const dayOrNight = dados.current.is_day > true ? "Dia" : "Noite";
 
         // Esse bloco me incomoda, tem que refatorar
         document.getElementById('temperatura-atual').innerText = `${dados.current.temperature_2m} ${dados.current_units.temperature_2m}`; // Temperatura atual
@@ -243,6 +250,7 @@
         document.getElementById('relative-humidity-2m').innerText = `${dados.current.relative_humidity_2m} %`; // Umidade relativa do ar a 2m
         document.getElementById('current-time').innerText = `Atualizado ${new Date(dados.current.time).toLocaleTimeString("pt-BR", { weekday: "long", hour: "2-digit", minute: "2-digit" })}`; // Tempo da medição
         document.getElementById('weather-code').innerText = weatherCode; // Código do clima
+        document.getElementById('day-night').innerText = ` ${dayOrNight} ` ;
         
         console.log("weather code: ", dados.current.weather_code);
 
