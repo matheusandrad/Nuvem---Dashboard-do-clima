@@ -10,43 +10,43 @@
 <!-- Nos cards, utilizei <class> para agrudar os cards -->
 
 <body>
-    <div class="Title">
+    <div class="title">
         <h1>Nuvem</h1>
         <h6>Dashboard do clima</h6>
     </div>
-    <div class="mainDiv">
+    <div class="main-div">
         <div class="cards">
-            <div class="cardsTipos">
+            <div class="cards-tipos">
                 <h1>Atuais</h1>
                 <div>
                     <p>Temperatura atual</p>
-                    <p class="mostrador" id="temperatura_atual"></p>
+                    <p class="mostrador" id="temperatura-atual"></p>
                     <p>Temperatura aparente</p>
-                    <p class="mostrador" id="temp_aparente_atual"></p>
+                    <p class="mostrador" id="temp-aparente-atual"></p>
                 </div>
                 <div>
                     <p>Pressão atmosférica</p>
-                    <p class="mostrador" id="pressao_ar"></p>
+                    <p class="mostrador" id="pressao-ar"></p>
                 </div>
                 <div>
                     <p>Chuva</p>
-                    <p class="mostrador" id="chuvaAtual"></p>
+                    <p class="mostrador" id="chuva-atual"></p>
                 </div>
                 <div>
                     <p>Vento</p>
-                    <p class="mostrador" id="vento_dir_atual"></p>
-                    <p class="mostrador" id="vento_vel_atual"></p>
+                    <p class="mostrador" id="vento-dir-atual"></p>
+                    <p class="mostrador" id="vento-vel-atual"></p>
                 </div>
                 <div>
                     <p>Umidade</p>
-                    <p class="mostrador" id="relative_humidity_2m"></p>
+                    <p class="mostrador" id="relative-humidity-2m"></p>
                 </div>
             </div>
-            <div class="cardsTipos">
+            <div class="cards-tipos">
                 <h1>Hourly</h1>
                 <div>
                     <p>Temperaturas</p>
-                    <p class="mostrador" id=""></p>
+                    <p class="mostrador" id="hourly-temperaturas"></p>
                 </div>
                 <div>
                     <p>Chuvas</p>
@@ -58,18 +58,18 @@
                     <p>Temperatuas no solo</p>
                 </div>
             </div>
-            <div class="cardsTipos">
+            <div class="cards-tipos">
                 <h1>Daily</h1>
                 <div>
                     <p>Temperaturas</p>
-                    <p class="mostrador" id="daily_temp"></p>
+                    <p class="mostrador" id="daily-temp"></p>
                 </div>
                 <div>
                     <p>Temperatuas aparentes</p>
                 </div>
                 <div>
                     <p>Duração da luz solar</p>
-                    <p class="mostrador" id="daylight_duration"></p>
+                    <p class="mostrador" id="daylight-duration"></p>
                 </div>
                 <div>
                     <p>Amanhecer e anoitecer</p>
@@ -83,55 +83,64 @@
         </div>
     </div>
 
-    <footer>2026</footer>
+    <footer id="current-time"></footer>
 </body>
 <script>
 
-    const apiURL = "https://api.open-meteo.com/v1/forecast?latitude=-29.7175&longitude=-52.4258&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,daylight_duration,sunshine_duration,apparent_temperature_max,apparent_temperature_min,rain_sum,wind_direction_10m_dominant,wind_gusts_10m_max,wind_speed_10m_max,temperature_2m_mean&hourly=temperature_2m,rain,precipitation_probability,apparent_temperature,precipitation,wind_speed_10m,wind_speed_180m,wind_direction_10m,wind_direction_180m,temperature_80m,temperature_180m,soil_temperature_0cm,soil_temperature_54cm,soil_moisture_0_to_1cm,soil_moisture_27_to_81cm&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,rain,precipitation,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&timezone=America%2FSao_Paulo&past_days=3&forecast_days=1"
+    const apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=-29.7175&longitude=-52.4258&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,daylight_duration,sunshine_duration,apparent_temperature_max,apparent_temperature_min,rain_sum,wind_direction_10m_dominant,wind_gusts_10m_max,wind_speed_10m_max,temperature_2m_mean&hourly=temperature_2m,rain,precipitation_probability,apparent_temperature,precipitation,wind_speed_10m,wind_speed_180m,wind_direction_10m,wind_direction_180m,temperature_80m,temperature_180m,soil_temperature_0cm,soil_temperature_54cm,soil_moisture_0_to_1cm,soil_moisture_27_to_81cm&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,rain,precipitation,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&timezone=America%2FSao_Paulo&past_days=3&forecast_days=1"
     let dados;
 
     function acessarDados(dados) {
 
-        document.getElementById('temperatura_atual').innerText = `${dados.current.temperature_2m} °C`; // Temperatura atual
-        document.getElementById('temp_aparente_atual').innerText = `${dados.current.apparent_temperature} °C`; // Temperatura aparente atual
-        document.getElementById('pressao_ar').innerText = `${dados.current.pressure_msl} hPa` // Pressão atmosférica
-        document.getElementById('chuvaAtual').innerText = `${dados.current.rain} mm`; // Chuva atual
-        document.getElementById('vento_dir_atual').innerText = `${dados.current.wind_direction_10m} °` // Direção do vento atual
-        document.getElementById('vento_vel_atual').innerText = `${dados.current.wind_speed_10m} km/h`; // Velocidade do vento atual
-        document.getElementById('relative_humidity_2m').innerText = `${dados.current.relative_humidity_2m} %`; // Umidade relativa do ar a 2m
+        // Calcula a direção do vento na bússola
+        function getBussola(angle) {
+            const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+            const i = Math.round(angle / 45) % 8;
+            console.log("Módulo dos graus: ", i)
+            return directions[i];
+        }
+        const bussola = getBussola(dados.current.wind_direction_10m);
 
+        document.getElementById('temperatura-atual').innerText = `${dados.current.temperature_2m} °C`; // Temperatura atual
+        document.getElementById('temp-aparente-atual').innerText = `${dados.current.apparent_temperature} °C`; // Temperatura aparente atual
+        document.getElementById('pressao-ar').innerText = `${dados.current.pressure_msl} hPa` // Pressão atmosférica
+        document.getElementById('chuva-atual').innerText = `${dados.current.rain} mm`; // Chuva atual
+        document.getElementById('vento-dir-atual').innerText = `${dados.current.wind_direction_10m} ° ${bussola}` // Direção do vento atual
+        document.getElementById('vento-vel-atual').innerText = `${dados.current.wind_speed_10m} km/h`; // Velocidade do vento atual
+        document.getElementById('relative-humidity-2m').innerText = `${dados.current.relative_humidity_2m} %`; // Umidade relativa do ar a 2m
+        document.getElementById('current-time').innerText = `Atualizado ${new Date(dados.current.time).toLocaleTimeString("pt-BR", { weekday: "long", hour: "2-digit", minute: "2-digit" })}`;
 
         // Temperaturas dia a dia
-        for (let i = dados.daily.time.length -2; i < dados.daily.time.length; i++) {
-            document.getElementById("daily_temp").innerHTML += (
-                new Date(dados.daily.time[i]).toLocaleDateString("pt-BR", {weekday: "long", day: "2-digit", month: "2-digit"}) + 
-                " Temperatura máxima: " + `${dados.daily.temperature_2m_max[i]} °C` +
-                " Temperatura mínima: " + `${dados.daily.temperature_2m_min[i]} °C` +
+        for (let i = dados.daily.time.length -3; i < dados.daily.time.length; i++) {
+            document.getElementById("daily-temp").innerHTML += (
+                new Date(dados.daily.time[i]).toLocaleDateString("pt-BR", {weekday: "long", day: "2-digit", month: "2-digit"}) + "<br>" +
+                " Temperatura máxima: " + `${dados.daily.temperature_2m_max[i]} °C` + "<br>" +
+                " Temperatura mínima: " + `${dados.daily.temperature_2m_min[i]} °C` + "<br>" +
                 "<br>"
             );
         }
 
+        const optionsTime = { hour: "2-digit", minute: "2-digit" };
+        const optionsDate = { day: "2-digit", month: "2-digit" };
         // Amanhecer e anoitecer
         for (let i = 0; i < dados.daily.sunrise.length; i++) {
+
             const valorAmanhecer = dados.daily.sunrise[i];
             const valorAnoitecer = dados.daily.sunset[i];
-            const dataObj1 = new Date(valorAmanhecer);
-            const dataObj2 = new Date(valorAnoitecer);
-            const sunriseTimeFormatted = dataObj1.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-            const sunsetTimeFormatted = dataObj2.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-            console.log(`Hora do amanhecer: ${sunriseTimeFormatted}, Hora do anoitecer: ${sunsetTimeFormatted}`);
+            const data = dados.daily.time[i];
+            const sunriseDate = new Date(valorAmanhecer).toLocaleTimeString("pt-BR", optionsTime);
+            const sunsetDate = new Date(valorAnoitecer).toLocaleTimeString("pt-BR", optionsTime);
+            const indexDate = new Date(data).toLocaleDateString("pt-BR", optionsDate);
 
-            document.getElementById('sunrise').innerHTML += `Amanheceu às ${sunriseTimeFormatted} <br>`;
-            document.getElementById('sunset').innerHTML += `Anoiteceu às ${sunsetTimeFormatted} <br>`;
-
-
-
+            document.getElementById('sunrise').innerHTML += `${indexDate} amanheceu às ${sunriseDate} <br>`;
+            document.getElementById('sunset').innerHTML += `${indexDate} anoiteceu às ${sunsetDate} <br>`;
         }
 
+        // Fim da função principal
         }
 
     // Busca a API
-    fetch(apiURL)
+    fetch(apiUrl)
         .then(function(objResponse) {
             return objResponse.json();
         })  
@@ -140,20 +149,15 @@
         });
 
         // Mede o tempo de resposta da API
-        async function tempoAPI() {
+        async function tempoApi() {
         // 1. Inicia o cronômetro com o nome 'tempo-api'
         console.time('Tempo de resposta da API');        
-        await fetch(apiURL);
+        await fetch(apiUrl);
         // 2. Para o cronômetro e mostra o tempo decorrido no console
         console.timeEnd('Tempo de resposta da API');
     }
 
-    function percorrerDados() {
-        console.log(dados)
-    }
-
-    tempoAPI();
-    percorrerDados();
-
+    tempoApi();
+    
 </script>
 </html>
