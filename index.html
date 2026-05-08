@@ -4,72 +4,148 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuvem - Dashboard do clima</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        @font-face {
+        font-family: Oswald;
+        src: url(fonts/Oswald/Oswald-VariableFont_wght.ttf);
+        }
+        @font-face {
+            font-family: Montserrat;
+            src: url(fonts/Montserrat/Montserrat-VariableFont_wght.ttf);
+        }
+        @font-face {
+            font-family: Roboto;
+            src: url(fonts/Roboto/Roboto-VariableFont_wdth\,wght.ttf);
+        }
+        @font-face {
+            font-family: Outfit;
+            src: url(fonts/Outfit/Outfit-VariableFont_wght.ttf);
+        }
+        h1 {
+            text-align: center;
+            font-family: Outfit;
+        }
+        h6, body {
+            text-align: center;
+            font-family: Roboto;
+        }
+        .cards {
+            display: grid; 
+            /* grid-template-columns: repeat(3, 1fr);  */
+            gap: 10px;
+            margin: 100px;
+        }
+        .cards div{
+            margin: 10px;
+            background-color: azure; 
+            text-align: center; 
+            border: 1px; 
+            border-style: solid; 
+            border-color: black; 
+            border-radius: 10px; 
+            padding: 50px; 
+            transition: all 0.5s ease;
+        }
+
+        .cards div:hover {
+            background-color:beige;
+        }
+
+        .cards-tipos {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .cards-tipos > div {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            min-height: 150px;
+        }
+
+        .mostrador {
+            font-weight: bold;
+        }
+
+        footer {
+            text-align: end;
+            margin: 10px;
+        }
+    </style>
+
 </head>
 
-<!-- Nos cards, utilizei <class> para agrudar os cards -->
+<!-- Nos cards, utilizei <class> para agrupar os cards -->
 
 <body>
-    <div class="Title">
+    <div class="title">
         <h1>Nuvem</h1>
-        <h6>Dashboard do clima</h6>
+        <!-- <h6>Dashboard do clima</h6> -->
+        <h2 id="weather-code"></h2>
     </div>
-    <div class="mainDiv">
+    <div class="main-div">
         <div class="cards">
-            <div class="cardsTipos">
-                <h1>Atuais</h1>
+            <h1>Hoje</h1>
+            <div class="cards-tipos">
+                
                 <div>
                     <p>Temperatura atual</p>
-                    <p class="mostrador" id="temperatura_atual"></p>
-                    <p>Temperatura aparente</p>
-                    <p class="mostrador" id="temp_aparente_atual"></p>
+                    <p class="mostrador" id="temperatura-atual"></p>
+                    <p>Sensação térmica</p>
+                    <p class="mostrador" id="temp-aparente-atual"></p>
                 </div>
                 <div>
                     <p>Pressão atmosférica</p>
-                    <p class="mostrador" id="pressao_ar"></p>
+                    <p class="mostrador" id="pressao-ar"></p>
                 </div>
                 <div>
-                    <p>Chuva</p>
-                    <p class="mostrador" id="chuvaAtual"></p>
+                    <p>Chuva agora</p>
+                    <p class="mostrador" id="chuva-atual"></p>
                 </div>
                 <div>
-                    <p>Vento</p>
-                    <p class="mostrador" id="vento_dir_atual"></p>
-                    <p class="mostrador" id="vento_vel_atual"></p>
+                    <p>Vento agora</p>
+                    <p class="mostrador" id="vento-dir-atual"></p>
+                    <p class="mostrador" id="vento-vel-atual"></p>
                 </div>
                 <div>
-                    <p>Umidade</p>
-                    <p class="mostrador" id="relative_humidity_2m"></p>
+                    <p>Umidade relativa do ar</p>
+                    <p class="mostrador" id="relative-humidity-2m"></p>
                 </div>
             </div>
-            <div class="cardsTipos">
-                <h1>Hourly</h1>
+            <h1>Últimas 24h</h1>
+            <div class="cards-tipos">
                 <div>
                     <p>Temperaturas</p>
-                    <p class="mostrador" id=""></p>
+                    <p class="mostrador" id="hourly-temperatures"></p>
                 </div>
                 <div>
                     <p>Chuvas</p>
+                    <p class="mostrador" id="hourly-rain"></p>
                 </div>
                 <div>
                     <p>Ventos</p>
+                    <p class="mostrador" id="hourly-wind"></p>
                 </div>
                 <div>
                     <p>Temperatuas no solo</p>
+                    <p class="mostrador" id="hourly-soil-temp"></p>
                 </div>
             </div>
-            <div class="cardsTipos">
-                <h1>Daily</h1>
+            <h1>Últimos 3 dias</h1>
+            <div class="cards-tipos">
                 <div>
                     <p>Temperaturas</p>
-                    <p class="mostrador" id="daily_temp"></p>
+                    <p class="mostrador" id="daily-temp"></p>
                 </div>
                 <div>
                     <p>Temperatuas aparentes</p>
+                    <p class="mostrador" id="daily-apparent-temp"></p>
                 </div>
                 <div>
                     <p>Duração da luz solar</p>
-                    <p class="mostrador" id="daylight_duration"></p>
+                    <p class="mostrador" id="sunlight-duration"></p>
                 </div>
                 <div>
                     <p>Amanhecer e anoitecer</p>
@@ -78,60 +154,177 @@
                 </div>
                 <div>
                     <p>Ventos</p>
+                    <p class="mostrador" id="daily-winds"></p>
+                </div>
+                <div>
+                    <p>Chuvas</p>
+                    <p class="mostrador" id="daily-rain"></p>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer>2026</footer>
+    <footer id="current-time"></footer>
 </body>
 <script>
 
-    const apiURL = "https://api.open-meteo.com/v1/forecast?latitude=-29.7175&longitude=-52.4258&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,daylight_duration,sunshine_duration,apparent_temperature_max,apparent_temperature_min,rain_sum,wind_direction_10m_dominant,wind_gusts_10m_max,wind_speed_10m_max,temperature_2m_mean&hourly=temperature_2m,rain,precipitation_probability,apparent_temperature,precipitation,wind_speed_10m,wind_speed_180m,wind_direction_10m,wind_direction_180m,temperature_80m,temperature_180m,soil_temperature_0cm,soil_temperature_54cm,soil_moisture_0_to_1cm,soil_moisture_27_to_81cm&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,rain,precipitation,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&timezone=America%2FSao_Paulo&past_days=3&forecast_days=1"
+    const apiUrl = "https://api.open-meteo.com/v1/forecast?latitude=-29.7175&longitude=-52.4258&daily=temperature_2m_max,temperature_2m_min,sunrise,sunset,daylight_duration,sunshine_duration,apparent_temperature_max,apparent_temperature_min,rain_sum,wind_direction_10m_dominant,wind_gusts_10m_max,wind_speed_10m_max,temperature_2m_mean&hourly=temperature_2m,rain,precipitation_probability,apparent_temperature,precipitation,wind_speed_10m,wind_speed_180m,wind_direction_10m,wind_direction_180m,temperature_80m,temperature_180m,soil_temperature_0cm,soil_temperature_54cm,soil_moisture_0_to_1cm,soil_moisture_27_to_81cm&current=temperature_2m,apparent_temperature,relative_humidity_2m,is_day,rain,precipitation,weather_code,cloud_cover,pressure_msl,surface_pressure,wind_speed_10m,wind_direction_10m,wind_gusts_10m&timezone=America%2FSao_Paulo&past_days=3&forecast_days=1"
     let dados;
 
+    // Função principal que acessa os dados em forma de objeto
     function acessarDados(dados) {
 
-        document.getElementById('temperatura_atual').innerText = `${dados.current.temperature_2m} °C`; // Temperatura atual
-        document.getElementById('temp_aparente_atual').innerText = `${dados.current.apparent_temperature} °C`; // Temperatura aparente atual
-        document.getElementById('pressao_ar').innerText = `${dados.current.pressure_msl} hPa` // Pressão atmosférica
-        document.getElementById('chuvaAtual').innerText = `${dados.current.rain} mm`; // Chuva atual
-        document.getElementById('vento_dir_atual').innerText = `${dados.current.wind_direction_10m} °` // Direção do vento atual
-        document.getElementById('vento_vel_atual').innerText = `${dados.current.wind_speed_10m} km/h`; // Velocidade do vento atual
-        document.getElementById('relative_humidity_2m').innerText = `${dados.current.relative_humidity_2m} %`; // Umidade relativa do ar a 2m
+        const hourlyTime = dados.hourly.time;
 
+        // Traduz o Weather Code
+        function traduzWeatherCode(code) {
+            switch (true) {
+                case code >= 0 && code <= 3:
+                    return "Tempo limpo";
+                case code > 3 && code <= 9:
+                    return "Partículas no ar";
+                case code > 9 && code <= 12:
+                    return "Nevoecodero";
+                case code > 12 && code <= 16:
+                    return "Fenônemos distantes";
+                case code > 16 && code <= 19:
+                    return "Fenômenos severos";
+                case code > 19 && code <= 29:
+                    return "Fenômenos que terminaram na última hora (chuva, neve, geada).";
+                case code > 29 && code <= 35:
+                    return "Tempestades de poeira ou areia";
+                case code > 35 && code <= 39:
+                    return "Neve alta";
+                case code > 39 && code <= 49:
+                    return "Névoa densa";
+                case code > 49 && code <= 59:
+                    return "Chuvisco";
+                case code > 59 && code <= 69:
+                    return "Chuva";
+                case code > 69 && code <= 79:
+                    return "Nevando";
+                case code > 79 && code <= 99:
+                    return "Pancadas de chuva";                
+                default:
+                    return "Não mapeado";
+            }
+        }
+        const weatherCode = traduzWeatherCode(dados.current.weather_code);
 
-        // Temperaturas dia a dia
-        for (let i = dados.daily.time.length -2; i < dados.daily.time.length; i++) {
-            document.getElementById("daily_temp").innerHTML += (
-                new Date(dados.daily.time[i]).toLocaleDateString("pt-BR", {weekday: "long", day: "2-digit", month: "2-digit"}) + 
-                " Temperatura máxima: " + `${dados.daily.temperature_2m_max[i]} °C` +
-                " Temperatura mínima: " + `${dados.daily.temperature_2m_min[i]} °C` +
-                "<br>"
-            );
+        // Calcula a direção do vento na bússola
+        function getBussola(angle) {
+            const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+            const i = Math.round(angle / 45) % 8;
+            console.log("Módulo dos graus: ", i)
+            return directions[i];
+        }
+        const bussola = getBussola(dados.current.wind_direction_10m);
+
+        // ----------------------------------------------------------------------------------------------------------------- //
+        // ----------------------------------------Bloco últimos 3 dias----------------------------------------------------- //
+        // ----------------------------------------------------------------------------------------------------------------- //
+
+        // Loop que percorre <temperatura>, <chuva>, <ventos> e <temperatura do solo> das últimas 24h
+        for (let i = hourlyTime.length - 24; i < hourlyTime.length; i++) {
+            const date = new Date(hourlyTime[i]).toLocaleTimeString("pt-BR", {hour: "2-digit"})
+            document.getElementById('hourly-temperatures').innerHTML += (`${date}h | ${dados.hourly.temperature_2m[i]} ${dados.hourly_units.temperature_2m} <br>`)
+            document.getElementById('hourly-rain').innerHTML += (`${date}h | ${dados.hourly.rain[i]} ${dados.hourly_units.rain} <br>  `)
+            document.getElementById('hourly-wind').innerHTML += (`${date}h | ${dados.hourly.wind_speed_10m[i]} ${dados.hourly_units.wind_speed_10m} <br>  `)
+            document.getElementById('hourly-soil-temp').innerHTML += (`${date}h | ${dados.hourly.soil_temperature_0cm[i]} ${dados.hourly_units.soil_temperature_0cm} | a 0 cm <br>  `)
         }
 
-        // Amanhecer e anoitecer
+        // Esse bloco me incomoda, tem que refatorar
+        document.getElementById('temperatura-atual').innerText = `${dados.current.temperature_2m} ${dados.current_units.temperature_2m}`; // Temperatura atual
+        document.getElementById('temp-aparente-atual').innerText = `${dados.current.apparent_temperature} °C`; // Temperatura aparente atual
+        document.getElementById('pressao-ar').innerText = `${dados.current.pressure_msl} hPa` // Pressão atmosférica
+        document.getElementById('chuva-atual').innerText = `${dados.current.rain} mm`; // Chuva atual
+        document.getElementById('vento-dir-atual').innerText = `${dados.current.wind_direction_10m} ° ${bussola}` // Direção do vento atual
+        document.getElementById('vento-vel-atual').innerText = `${dados.current.wind_speed_10m} km/h`; // Velocidade do vento atual
+        document.getElementById('relative-humidity-2m').innerText = `${dados.current.relative_humidity_2m} %`; // Umidade relativa do ar a 2m
+        document.getElementById('current-time').innerText = `Atualizado ${new Date(dados.current.time).toLocaleTimeString("pt-BR", { weekday: "long", hour: "2-digit", minute: "2-digit" })}`; // Tempo da medição
+        document.getElementById('weather-code').innerText = weatherCode; // Código do clima
+        
+        console.log("weather code: ", dados.current.weather_code);
+
+        // ----------------------------------------------------------------------------------------------------------------- //
+        // ----------------------------------------Bloco últimos 3 dias----------------------------------------------------- //
+        // ----------------------------------------------------------------------------------------------------------------- //
+
+        // Função auxiliar para converter segundos em hh:mm:ss
+        function formatDuration(totalSeg) {
+            const segundosInt = Math.max(0, Math.floor(Number(totalSeg) || 0));
+            const horas = String(Math.floor(segundosInt / 3600)).padStart(2, "0");
+            const minutos = String(Math.floor((segundosInt % 3600) / 60)).padStart(2, "0");
+            const segundos = String(segundosInt % 60).padStart(2, "0");
+            return horas + ":" + minutos + ":" + segundos;
+        }
+
+        // Temperaturas últimos 3 dias - Máxima e Mínima
+        for (let i = dados.daily.time.length -3; i < dados.daily.time.length; i++) {
+            const date = new Date(dados.daily.time[i]).toLocaleDateString(("pt-BR"), { weekday: "short", day: "2-digit", month: "2-digit" })
+            document.getElementById("daily-temp").innerHTML += (`
+                ${date} <br>
+                Temperatura máxima: ${dados.daily.temperature_2m_max[i]} °C <br>
+                Temperatura mínima: ${dados.daily.temperature_2m_min[i]} °C <br> 
+                <br>
+            `);
+        }
+
+        // Temperaturas aparentes últimos 3 dias
+        for (let i = 0; i < dados.daily.time.length; i++) {
+            const date = new Date(dados.daily.time[i]).toLocaleDateString("pt-BR", { weekday:"short", day: "2-digit", month: "2-digit" });
+            const min = dados.daily.apparent_temperature_min[i];
+            const max = dados.daily.apparent_temperature_min[i];
+            const unit = dados.daily_units.apparent_temperature_min
+            document.getElementById('daily-apparent-temp').innerHTML += ` ${date} | Mínimas ${min} ${unit} | Máximas ${max} ${unit} <br><br>  `
+        }
+
+        // Duração da luz solar últimos 3 dias
+        for (let i = 0; i < dados.daily.time.length; i++) {
+            const date = new Date(dados.daily.time[i]).toLocaleDateString("pt-BR", { weekday:"short", day: "2-digit", month: "2-digit" });
+            const duration = formatDuration(dados.daily.daylight_duration[i]);
+            document.getElementById('sunlight-duration').innerHTML += ` ${date} | ${duration} <br> `
+        }
+
+        // Amanhecer e anoitecer últimos 3 dias
+        const optionsTime = { hour: "2-digit", minute: "2-digit" };
+        const optionsDate = { day: "2-digit", month: "2-digit" };
         for (let i = 0; i < dados.daily.sunrise.length; i++) {
             const valorAmanhecer = dados.daily.sunrise[i];
             const valorAnoitecer = dados.daily.sunset[i];
-            const dataObj1 = new Date(valorAmanhecer);
-            const dataObj2 = new Date(valorAnoitecer);
-            const sunriseTimeFormatted = dataObj1.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-            const sunsetTimeFormatted = dataObj2.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
-            console.log(`Hora do amanhecer: ${sunriseTimeFormatted}, Hora do anoitecer: ${sunsetTimeFormatted}`);
-
-            document.getElementById('sunrise').innerHTML += `Amanheceu às ${sunriseTimeFormatted} <br>`;
-            document.getElementById('sunset').innerHTML += `Anoiteceu às ${sunsetTimeFormatted} <br>`;
-
-
-
+            const data = dados.daily.time[i];
+            const sunriseDate = new Date(valorAmanhecer).toLocaleTimeString("pt-BR", optionsTime);
+            const sunsetDate = new Date(valorAnoitecer).toLocaleTimeString("pt-BR", optionsTime);
+            const indexDate = new Date(data).toLocaleDateString("pt-BR", optionsDate);
+            document.getElementById('sunrise').innerHTML += `${indexDate} amanheceu às ${sunriseDate} <br>`;
+            document.getElementById('sunset').innerHTML += `${indexDate} anoiteceu às ${sunsetDate} <br>`;
         }
 
+        // Ventos últimos 3 dias 
+        for (let i = 0; i < dados.daily.time.length; i++) {
+            const date = new Date(dados.daily.time[i]).toLocaleDateString("pt-BR", { weekday:"short", day: "2-digit", month: "2-digit" });
+            const winds = dados.daily.wind_speed_10m_max[i];
+            const windsDominant = dados.daily.wind_direction_10m_dominant[i];
+            const windSpeedUnit = dados.daily_units.wind_speed_10m_max;
+            const windDirectionUnit = dados.daily_units.wind_direction_10m_dominant;
+            document.getElementById('daily-winds').innerHTML += ` ${date} | Velocidade máxima ${winds} ${windSpeedUnit} | Direção dominante ${windsDominant} ${windDirectionUnit} <br><br> `
+        }
+
+        // Chuvas últimos 3 dias 
+        for (let i = 0; i < dados.daily.time.length; i++) {
+            const date = new Date(dados.daily.time[i]).toLocaleDateString("pt-BR", { weekday:"short", day: "2-digit", month: "2-digit" });
+            const rain = dados.daily.rain_sum[i];
+            const rainUnit = dados.daily_units.rain_sum;
+            document.getElementById('daily-rain').innerHTML += ` ${date} | ${rain} ${rainUnit} <br><br> `;
+        }
+
+
+
+        // Fim da função principal
         }
 
     // Busca a API
-    fetch(apiURL)
+    fetch(apiUrl)
         .then(function(objResponse) {
             return objResponse.json();
         })  
@@ -140,20 +333,14 @@
         });
 
         // Mede o tempo de resposta da API
-        async function tempoAPI() {
+        async function tempoApi() {
         // 1. Inicia o cronômetro com o nome 'tempo-api'
         console.time('Tempo de resposta da API');        
-        await fetch(apiURL);
+        await fetch(apiUrl);
         // 2. Para o cronômetro e mostra o tempo decorrido no console
         console.timeEnd('Tempo de resposta da API');
     }
-
-    function percorrerDados() {
-        console.log(dados)
-    }
-
-    tempoAPI();
-    percorrerDados();
+    tempoApi();
 
 </script>
 </html>
